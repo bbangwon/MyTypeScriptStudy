@@ -8,3 +8,10 @@ userInput = 'Max';
 if (typeof userInput === 'string') {
   userName = userInput;
 }
+
+//never는 함수가 끝나지 않는다는 것을 의미한다.
+function generateError(message: string, code: number): never {
+  throw { message: message, errorCode: code };
+}
+
+generateError('An error occurred!', 500);
