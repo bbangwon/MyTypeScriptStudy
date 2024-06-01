@@ -38,3 +38,14 @@ function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
 }
 
 console.log(countAndDescribe(["Sports", "Cooking"]));
+
+// keyof 제너릭
+// U는 T의 키값이어야 한다.
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return "Value: " + obj[key];
+}
+
+console.log(extractAndConvert({ name: "Max" }, "name"));
