@@ -11,9 +11,9 @@ type Employee = {
 type ElevatedEmployee = Admin & Employee;
 
 const e1: ElevatedEmployee = {
-    name: 'Max',
-    privileges: ['create-server'],
-    startDate: new Date()
+  name: 'Max',
+  privileges: ['create-server'],
+  startDate: new Date()
 };
 
 //유니온 타입
@@ -105,5 +105,18 @@ moveAnimal({ type: 'bird', flyingSpeed: 10 });
 
 //형변환
 const paragraph = document.getElementById('message-output');
-const userInputElement = document.getElementById('user-input')! as HTMLInputElement;
-userInputElement.value = 'Hi there!';
+const userInputElement = document.getElementById('user-input');
+if (userInputElement) {
+  (userInputElement as HTMLInputElement).value = 'Hi there!';
+
+}
+
+//인덱스 타입
+interface ErrorContainer { // { email: 'Not a valid email', username: 'Must start with a character!' }  
+  [prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+  email: 'Not a valid email!',
+  username: 'Must start with a capital character!'
+};
