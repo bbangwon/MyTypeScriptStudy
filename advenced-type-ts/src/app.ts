@@ -35,6 +35,16 @@ function add(a: Combinable, b: Combinable) {
 const result = add('Max', ' Schwarz');
 console.log(result.split(' '));
 
+// 선택적 체이닝
+const fetchedUserData = {
+  id: 'u1',
+  name: 'Max',
+  job: { title: 'CEO', description: 'My own company' }
+};
+
+console.log(fetchedUserData?.job?.title);
+
+
 type UnknownEmployee = Employee | Admin;
 
 function printEmployeeInformation(emp: UnknownEmployee) {
