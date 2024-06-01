@@ -13,4 +13,9 @@ promise.then(data => {
   data.split(' ');  
 });
 
+// 제너릭 함수
+function merge<T extends {}, U>(objA: T, objB: U) {
+  return Object.assign(objA, objB);}
 
+const mergedObj = merge({name: 'Max', hobbies: ['Sports']}, {age: 30});
+console.log(mergedObj);
