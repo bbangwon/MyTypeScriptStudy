@@ -133,14 +133,52 @@ const button = document.querySelector('button')!;
 button.addEventListener('click', p.showMessage);
 
 // Validation with Decorators
-function Required() {}
-function PositiveNumber() {}
-function validate(obj: object) {}
+
+interface ValidatorConfig {
+  [property: string]: {
+    [validatableProp: string]: string[]; // ['required', 'positive']
+  };
+}
+
+const registeredValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+    registeredValidators[target.constructor.name] = {
+      ...registeredValidators[target.constructor.name],
+      [propName]: ['required']
+    };
+}
+function PositiveNumber(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: ['positive']
+  };
+}
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name];
+  if(!objValidatorConfig) {
+    return true;
+  }
+  let isValid = true;
+  for(const prop in objValidatorConfig) {
+    for(const validator of objValidatorConfig[prop]) {
+      switch(validator) {
+        case 'required':
+          isValid = isValid && !!obj[prop];
+          break;
+        case 'positive':
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+  return isValid;
+}
 
 class Course {
-  //@Required
+  @Required
   title: string;
-  //@PositiveNumber
+  @PositiveNumber
   price: number;
 
   constructor(t: string, p: number) {
@@ -160,10 +198,10 @@ courseForm.addEventListener('submit', event => {
 
   const createdCourse = new Course(title, price);
 
-  // if(!validate(createdCourse)) {
-  //   alert('Invalid input, please try again!');
-  //   return;
-  // }
+  if(!validate(createdCourse)) {
+    alert('Invalid input, please try again!');
+    return;
+  }
 
   console.log(createdCourse);
 });
