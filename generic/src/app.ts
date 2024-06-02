@@ -83,3 +83,29 @@ const numberStorage = new DataStorage<number>();
 // // ...
 // objStorage.removeItem(maxObj);
 // console.log(objStorage.getItems());
+
+//제너릭 유틸리티
+//Partial : 모든 속성이 옵셔널하게 만든다.
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
+}
+
+function createCourseGoal(
+  title: string,
+  description: string,
+  date: Date
+): CourseGoal {
+  let courseGoal: Partial<CourseGoal> = {};
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal;
+}
+
+//Readonly : 읽기 전용
+const names2: Readonly<string[]> = ["Max", "Anna"];
+//names2.push('Manu');
+//names2.pop();
+
