@@ -39,6 +39,7 @@ class State<T> {
 }
 
 class ProjectState extends State<Project> {
+
   private projects: Project[] = [];
 
   private static instance: ProjectState;
@@ -63,9 +64,21 @@ class ProjectState extends State<Project> {
       ProjectStatus.Active
     );
     this.projects.push(newProject);
+    this.updateListeners();
+  }
+
+  moveProject(projId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find((prj) => prj.id === projId);
+    if (project && project.status !== newStatus) {
+      project.status = newStatus;
+      this.updateListeners();
+    }    
+  }
+
+  private updateListeners() {
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());
-    }
+    }    
   }
 }
 
@@ -234,8 +247,13 @@ class ProjectList
     }    
   }
 
+  @autobind
   dropHandler(event: DragEvent): void {
-    console.log(event.dataTransfer!.getData("text/plain"));
+    const projId = event.dataTransfer!.getData("text/plain");
+    projectState.moveProject(
+      projId,
+      this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+    );
   }
 
   @autobind
