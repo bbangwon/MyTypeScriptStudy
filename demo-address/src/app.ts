@@ -21,17 +21,21 @@ function searchAddressHandler(event: Event) {
         enteredAddress
       )}&key=${GOOGLE_API_KEY}`
     )
-    .then((response) => {
+    .then(async (response) => {
       if (response.data.status !== "OK") {
         throw new Error("Could not fetch location!");
       }
+
+      const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
       const coordinates = response.data.results[0].geometry.location;
-      const map = new google.maps.Map(document.getElementById("map")!, {
+      const map = new Map(document.getElementById("map")!, {
         center: coordinates,
         zoom: 16,
+        mapId: 'DEMO_MAP_ID',
       });
 
-      new google.maps.Marker({
+      new AdvancedMarkerElement({
         position: coordinates,
         map
       });
