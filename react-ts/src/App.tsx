@@ -8,6 +8,12 @@ import { Todo } from './todo.model';
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
+  const todoDeleteHandler = (todoId: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.filter(todo => todo.id !== todoId);
+    });
+  }
+
   const todoAddHandler = (text: string) => {
     setTodos(prevTodos => [
       ...prevTodos,
@@ -18,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <NewTodo onAddTodo={todoAddHandler} />
-      <TodoList items={todos} />
+      <TodoList items={todos} onDeleteTodo={todoDeleteHandler} />
     </div>
   );
 }
